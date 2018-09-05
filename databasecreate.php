@@ -6,6 +6,7 @@
   $servername = "localhost";
   $username = "root";
   $password = "";
+  $dbname = "myDB";
 
   // Create connection
   $conn = new mysqli($servername, $username, $password);
@@ -15,7 +16,7 @@
   }
 
   // Create database
-  $sql = "CREATE DATABASE SportsDB";
+  $sql = "CREATE DATABASE ".$dbname;
   if ($conn->query($sql) === TRUE) {
       echo "Database created successfully";
   } else {
