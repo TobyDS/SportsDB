@@ -6,6 +6,7 @@
   $servername = "localhost";
   $username = "root";
   $password = "";
+  $dbname = "SportsDB";
 
   // Create connection
   $conn = new mysqli($servername, $username, $password);
@@ -15,7 +16,7 @@
   }
 
   // Create database
-  $sql = "DROP DATABASE SportsDB";
+  $sql = "DROP DATABASE ".$dbname;
   if ($conn->query($sql) === TRUE) {
       echo "Database dropped successfully";
   } else {
