@@ -18,13 +18,14 @@
   // Create database
   $sql = "DROP DATABASE ".$dbname;
   if ($conn->query($sql) === TRUE) {
-      echo "Database dropped successfully";
+      echo nl2br("Database dropped successfully\n");
   } else {
-      echo "Error dropping database: " . $conn->error;
+      echo nl2br("Error dropping database: " . $conn->error."\n");
   }
 
   $conn->close();
   ?>
+  <input type="button" onclick="location.href='databasecreate.php';" value="CreateDB" />
 </body>
 </head>
 </html>
