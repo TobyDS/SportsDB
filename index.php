@@ -1,2 +1,3 @@
-<h1>SportsDB Page</h1>
-<p>Test continued</p>
+<html>
+<h1>Index.html reached</h1>
+</html>

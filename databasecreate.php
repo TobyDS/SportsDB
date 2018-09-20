@@ -135,6 +135,7 @@
   $conn->close();
   ?>
   <input type="button" onclick="location.href='databasedrop.php';" value="DropDB" />
+  <input type="button" onclick="location.href='filldatabase.php';" value="FillDB" />
 
 </body>
 </head>
