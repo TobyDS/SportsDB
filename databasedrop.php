@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
-<body>
-  <?php
+	<head>
+		<body>
+			<?php
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -25,7 +25,7 @@
 
   $conn->close();
   ?>
-  <input type="button" onclick="location.href='databasecreate.php';" value="CreateDB" />
-</body>
-</head>
+			<input type="button" onclick="location.href='databasecreate.php';" value="CreateDB" />
+		</body>
+	</head>
 </html>

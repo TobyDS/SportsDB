@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
-<body>
-
-  <?php
+	<head>
+		<body>
+			<?php
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -134,9 +133,8 @@
 
   $conn->close();
   ?>
-  <input type="button" onclick="location.href='databasedrop.php';" value="DropDB" />
-  <input type="button" onclick="location.href='filldatabase.php';" value="FillDB" />
-
-</body>
-</head>
+			<input type="button" onclick="location.href='databasedrop.php';" value="DropDB" />
+			<input type="button" onclick="location.href='filldatabase.php';" value="FillDB" />
+		</body>
+	</head>
 </html>
