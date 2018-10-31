@@ -54,6 +54,7 @@
   Name VARCHAR(30) NOT NULL,
   HS_Name VARCHAR(30) NOT NULL,
   HS_Address VARCHAR(20) NOT NULL,
+	Cap INT(3) DEFAULT NULL,
   Current enum('Y','N') DEFAULT 'Y' NOT NULL
   )";
 
@@ -68,6 +69,7 @@
   Choice_ID INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   Current enum('Y','N') DEFAULT 'Y' NOT NULL,
   Sex enum('M','F','B') NOT NULL,
+	Cap INT(3) DEFAULT NULL,
   Term_ID INT(3) NOT NULL,
   Year_ID INT(3)  NOT NULL,
   Sport_ID INT(9) NOT NULL

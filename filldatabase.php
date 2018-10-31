@@ -7,7 +7,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
     function func()
     {
       $conn = mysqli_connect("localhost", "root", "", "SportsDB");
-      //Sets value of DB into Current DB
 
       // Reads sl.csv into Student table
       $file = fopen("csvs/sl.csv", "r");
@@ -45,6 +44,19 @@ if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
 
         if (! empty($result)) {
             echo nl2br("Term CSV Data Imported into the Database \n");
+        } else {
+            echo "Problem in Importing CSV Data";
+        }
+      // Reads current.csv into Current_DB table
+      $file = fopen("csvs/current.csv", "r");
+      while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+          $sqlInsert = "INSERT into Current_DB (DB)
+                  values ($column[0])";
+          $result = mysqli_query($conn, $sqlInsert);
+        }
+
+        if (! empty($result)) {
+            echo nl2br("CurrentDB CSV Data Imported into the Database \n");
         } else {
             echo "Problem in Importing CSV Data";
         }
