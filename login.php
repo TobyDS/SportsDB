@@ -6,6 +6,13 @@
 
 </head>
 <body>
+
+<?php
+session_start();
+print_r($_SESSION);
+?>
+
+<div>
   <form action="Authentication.php" method ="post">
     <h3>Please Login</h3>
     <h4>Enter Username and Password</h4>
@@ -15,11 +22,13 @@
   </form>
 </div>
 
-<?php
-include_once('connection.php');
-$stmt = $conn->prepare("SELECT * FROM Students");
-$stmt->execute();
-?>
+<div>
+  <form action='Backdoor.php' method='post'>
+  <button name='submit' value='0'>Student</button>
+  <button name='submit' value='1'>Teacher</button>
+  <button name='submit' value='2'>Admin</button>
+</form>
+</div>
 
 </body>
 </html>

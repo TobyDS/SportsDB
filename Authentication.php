@@ -18,5 +18,15 @@ try{
 	}
 $conn=null;
 
-header('Location:studentChoice.php');
+session_start();
+
+if($row['Name']=='') {
+     header('Location:login.php');
+} else {
+	$_SESSION['username']= $_POST['username'];
+	$_SESSION['name'] = $row['Name'];
+	$_SESSION['sex'] = $row['Sex'];
+	$_SESSION['year'] = $row['Year'];
+	header('Location:studentChoice.php');
+}
 ?>
