@@ -52,17 +52,17 @@ print_r($_SESSION);
           <thead>
             <tr>
               <td>Name</td>
-              <td>T1_choice</td>
-              <td>T2_choice</td>
-              <td>T3_choice</td>
+              <td>Term 1 Sport</td>
+              <td>Term 2 Sport</td>
+              <td>Term 3 Sport</td>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <td>Name</td>
-              <td>T1_choice</td>
-              <td>T2_choice</td>
-              <td>T3_choice</td>
+              <td>Term 1 Sport</td>
+              <td>Term 2 Sport</td>
+              <td>Term 3 Sport</td>
             </tr>
           </tfoot>
           <tbody>
@@ -73,7 +73,8 @@ print_r($_SESSION);
                   "SELECT st.Name AS student, s.Name AS sport
                   From Sports AS s INNER JOIN Choices AS c
                   ON s.Sport_ID = c.Sport_ID INNER JOIN Student_Choices AS sc
-                  ON sc.T1_Choice = c.Choice_ID INNER JOIN Students AS st
+                  ON sc.T1_Choice = c.Choice_ID
+                  INNER JOIN Students AS st
                   ON st.Username = sc.Username
                   ");
                 $stmt->execute();
