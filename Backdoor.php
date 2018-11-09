@@ -13,7 +13,7 @@ try{
 		$_SESSION['username']= 'testTeacher.test';
 		$_SESSION['name'] = 'Tester';
 		$_SESSION['role'] = '1';
-		header('Location:studentChoice.php');
+		header('Location:registers.php');
 	}
 	else if($_POST['submit']==2) {header('Location:studentChoice.php');}
 

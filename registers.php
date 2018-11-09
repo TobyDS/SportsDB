@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
       $conn = mysqli_connect("localhost", "root", "", "SportsDB");
     }
 session_start();
-if( !isset($_SESSION['username']) ){ /* Change into role = teacher or admin*/
+if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
   header('Location:login.php');
 }
 
@@ -57,33 +57,35 @@ print_r($_SESSION);
               <td>Term 3 Sport</td>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <td>Name</td>
-              <td>Term 1 Sport</td>
-              <td>Term 2 Sport</td>
-              <td>Term 3 Sport</td>
-            </tr>
-          </tfoot>
           <tbody>
             <?php
               ini_set("display_errors", 1);
               try{
                 $stmt = $conn->prepare(
-                  "SELECT st.Name AS student, s.Name AS sport
-                  From Sports AS s INNER JOIN Choices AS c
-                  ON s.Sport_ID = c.Sport_ID INNER JOIN Student_Choices AS sc
-                  ON sc.T1_Choice = c.Choice_ID
-                  INNER JOIN Students AS st
-                  ON st.Username = sc.Username
+                  "SELECT st.Name AS student, T1.Name AS T1, T2.Name AS T2, T3.Name AS T3
+                  From Students AS st INNER JOIN Student_Choices AS sc
+                  ON st.Username = sc.Username INNER JOIN Current_DB AS db
+                  ON sc.DB_year = db.DB
+                  INNER JOIN Choices AS c1
+                  ON sc.T1_Choice = c1.Choice_ID
+                  INNER JOIN Sports AS T1
+                  ON c1.Sport_ID = T1.Sport_ID
+                  INNER JOIN Choices AS c2
+                  ON sc.T2_Choice = c2.Choice_ID
+                  INNER JOIN Sports AS T2
+                  ON c2.Sport_ID = T2.Sport_ID
+                  INNER JOIN Choices AS c3
+                  ON sc.T3_Choice = c3.Choice_ID
+                  INNER JOIN Sports AS T3
+                  ON c3.Sport_ID = T3.Sport_ID
                   ");
                 $stmt->execute();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                   echo '<tr>
                   <td>'.$row['student'].'</td>
-                  <td>'.$row['sport'].'</td>
-                  <td>'.$row['sport'].'</td>
-                  <td>'.$row['sport'].'</td>
+                  <td>'.$row['T1'].'</td>
+                  <td>'.$row['T2'].'</td>
+                  <td>'.$row['T3'].'</td>
                   </tr>
                   ';
                 }
@@ -100,11 +102,38 @@ print_r($_SESSION);
   </div>
 <script type="text/javascript">
 $('#register').DataTable( {
-    dom: 'Bfrtip',
-    buttons: [
-        'copy', 'excel', 'pdf'
+    'dom': 'Bfrtip',
+    'buttons': [{
+      extend: 'copy'
+    },
+    {
+      extend: 'excel'
+    },
+    {
+      extend: 'pdf',
+      title: 'Oundle School Sports Database',
+      download: 'open',
+      customize: function (doc) {
+        doc.content[1].table.widths =
+        Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+      },
+      tableHeader: {
+        bold:!0,
+        fontSize:11,
+        color:'white',
+        fillColor:'#F0F8FF',
+        alignment:'center'
+}
+    },
+    {
+      extend: 'print'
+    }
     ]
-} );
+    } );
 </script>
+
+<form action="process.php" method="post">
+  <input type="submit" value="Logout">
+</form>
 </body>
 </html>

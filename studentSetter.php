@@ -19,6 +19,7 @@ $_SESSION['username']= 'studnentTester.test';
 $_SESSION['name'] = 'Tester';
 $_SESSION['sex'] = $_POST['Sex'];
 $_SESSION['year'] = $_POST['Year'];
+$_SESSION['role'] = 0;
 header('Location:studentChoice.php');
 
 ?>
