@@ -109,6 +109,7 @@
 
   // sql to create table Student_Choices
   $sql = "CREATE TABLE Student_Choices (
+	Unique_ID INT(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   Username VARCHAR(20) NOT NULL,
   T1_Choice INT(3) NOT NULL,
   T2_Choice INT(3) NOT NULL,

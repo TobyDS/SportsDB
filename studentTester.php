@@ -9,7 +9,7 @@
     <select name="Year">
       <option value=" " selected disabled>Please select a Year...</option>
       <option value='1'>First Form</option>
-      <option value='2'>Seconed Form</option>
+      <option value='2'>Second Form</option>
       <option value='3'>Third Form</option>
       <option value='4'>Fourth Form</option>
       <option value='5'>Fith Form</option>
