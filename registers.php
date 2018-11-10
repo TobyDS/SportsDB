@@ -25,22 +25,13 @@ print_r($_SESSION);
 <head>
   <meta charset="UTF-8">
   <title>Register exporting</title>
-  <!--- Link to Bootstrap 4 -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-  <!-- Link to jquery -->
-  <script
-  src="http://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-
-  <!-- Link to Data Tables -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.4/b-html5-1.5.4/b-print-1.5.4/r-2.2.2/datatables.min.css"/>
+  <!--- Link to CDN for Bootstrap 4, jQuery and DataTables -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.css"/>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.4/b-html5-1.5.4/b-print-1.5.4/r-2.2.2/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
 
 
 </head>
@@ -52,6 +43,8 @@ print_r($_SESSION);
           <thead>
             <tr>
               <td>Name</td>
+              <td>House</td>
+              <td>Year</td>
               <td>Term 1 Sport</td>
               <td>Term 2 Sport</td>
               <td>Term 3 Sport</td>
@@ -62,8 +55,11 @@ print_r($_SESSION);
               ini_set("display_errors", 1);
               try{
                 $stmt = $conn->prepare(
-                  "SELECT st.Name AS student, T1.Name AS T1, T2.Name AS T2, T3.Name AS T3
-                  From Students AS st INNER JOIN Student_Choices AS sc
+                  "SELECT st.Name AS student, st.House AS house,
+                  (CASE WHEN st.Year = 6 THEN 'L6' WHEN st.Year = 7 THEN 'U6' ELSE st.Year END) as year,
+                  T1.Name AS T1, T2.Name AS T2, T3.Name AS T3
+                  From Students AS st
+                  INNER JOIN Student_Choices AS sc
                   ON st.Username = sc.Username INNER JOIN Current_DB AS db
                   ON sc.DB_year = db.DB
                   INNER JOIN Choices AS c1
@@ -83,6 +79,8 @@ print_r($_SESSION);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                   echo '<tr>
                   <td>'.$row['student'].'</td>
+                  <td>'.$row['house'].'</td>
+                  <td>'.$row['year'].'</td>
                   <td>'.$row['T1'].'</td>
                   <td>'.$row['T2'].'</td>
                   <td>'.$row['T3'].'</td>
@@ -117,23 +115,24 @@ $('#register').DataTable( {
         doc.content[1].table.widths =
         Array(doc.content[1].table.body[0].length + 1).join('*').split('');
       },
-      tableHeader: {
-        bold:!0,
-        fontSize:11,
-        color:'white',
-        fillColor:'#F0F8FF',
-        alignment:'center'
-}
     },
     {
-      extend: 'print'
+      extend: 'print',
+      title: 'Oundle School Sports Database',
+      messageTop: 'This is a list of all pupils sports options',
+      footer: false,
+      header: false
     }
     ]
     } );
 </script>
 
-<form action="process.php" method="post">
-  <input type="submit" value="Logout">
-</form>
+  <form action="process.php" method="post">
+     <div class="text-center">
+       <input type="submit" class="btn btn-primary btn-sx" value="Logout">
+     </div>
+  </form>
+
+</div>
 </body>
 </html>
