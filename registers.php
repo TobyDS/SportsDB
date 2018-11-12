@@ -32,7 +32,7 @@ print_r($_SESSION);
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 
 </head>
 <body>
@@ -100,8 +100,13 @@ print_r($_SESSION);
   </div>
 <script type="text/javascript">
 $('#register').DataTable( {
-    'dom': 'Bfrtip',
-    'buttons': [{
+    "order": [[ 1, 'asc' ], [ 2, 'asc' ], [ 0, 'asc' ]],
+    "columnDefs": [
+      { "orderable": false, "targets": '_all'}
+    ],
+    'dom': 'Bfrtipl',
+    'buttons': [
+    {
       extend: 'copy'
     },
     {
@@ -109,11 +114,22 @@ $('#register').DataTable( {
     },
     {
       extend: 'pdf',
-      title: 'Oundle School Sports Database',
+      orientation: 'landscape',
+      title: 'Oundle School Student Sports Options',
       download: 'open',
       customize: function (doc) {
         doc.content[1].table.widths =
         Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+
+        var rowCount = doc.content[1].table.body.length;
+        for (i = 1; i < rowCount; i++) {
+          doc.content[1].table.body[i][0].alignment = 'center';
+          doc.content[1].table.body[i][1].alignment = 'center';
+          doc.content[1].table.body[i][2].alignment = 'center';
+          doc.content[1].table.body[i][3].alignment = 'center';
+          doc.content[1].table.body[i][4].alignment = 'center';
+          doc.content[1].table.body[i][5].alignment = 'center';
+};
       },
     },
     {

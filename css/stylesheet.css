@@ -1,0 +1,39 @@
+body {
+font: 90%/1.45em "Helvetica Neue", HelveticaNeue, Verdana, Arial, Helvetica, sans-serif;
+margin: 0;
+padding: 0;
+color: #333;
+background-color: #fff;
+};
+
+table.dataTable thead .sorting:before{
+  opacity: 0;
+}
+table.dataTable thead .sorting_asc:before{
+  opacity: 0;
+}
+table.dataTable thead .sorting_desc:before{
+  opacity: 0;
+}
+table.dataTable thead .sorting_asc_disabled:before{
+  opacity: 0;
+}
+table.dataTable thead .sorting_desc_disabled:before {
+  opacity: 0;
+}
+
+table.dataTable thead .sorting:after{
+  opacity: 0;
+}
+table.dataTable thead .sorting_asc:after{
+  opacity: 0;
+}
+table.dataTable thead .sorting_desc:after{
+  opacity: 0;
+}
+table.dataTable thead .sorting_asc_disabled:after{
+  opacity: 0;
+}
+table.dataTable thead .sorting_desc_disabled:after {
+  opacity: 0;
+}
