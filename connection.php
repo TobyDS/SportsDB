@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "SportsDB";
+$servername = "fdb23.awardspace.net";
+$username = "2880778_sportsdb";
+$password = "L@nhams1";
+$dbname = "2880778_sportsdb";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
