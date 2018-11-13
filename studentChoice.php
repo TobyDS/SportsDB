@@ -31,102 +31,132 @@ print_r($_SESSION);
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
-  
+
   <body>
-    <h2>Oundle School Sports database</h2>
-    <h3><?php echo 'Welcome '.$_SESSION['name'] ?></h4>
-    <h4>Please fill all forms</h4>
-    <form action="postChoice.php" method ="post">
-      <select name="term1sport">
-      <option value=" " selected disabled>Please select a first term sport...</option>
-      <?php
-      include_once('connection.php');
-      try{
-        $stmt = $conn->prepare(
-          "SELECT DISTINCT c.Choice_ID, s.Name
-          From Sports AS s INNER JOIN Choices As c
-          ON c.Sport_ID = s.Sport_ID INNER JOIN Year As y
-          ON y.Year_ID = c.Year_ID
-          Where y.Code Like CONCAT('%', :year, '%') AND
-          c.Current = 'Y' AND
-          c.Sex IN (:sex, 'B') AND
-          c.Term_ID = 1 ORDER BY Name ASC");
-        $stmt->bindParam(':year', $_SESSION['year']);
-        $stmt->bindParam(':sex', $_SESSION['sex']);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        {
-          echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
-        }
-      }
-      catch(PDOException $e)
-      {
-        echo "error".$e->getMessage();
-      }
-      ?>
-  	  </select>
-      <select name="term2sport">
-      <option value=" " selected disabled>Please select a second term sport...</option>
-      <?php
-      include_once('connection.php');
-      try{
-        $stmt = $conn->prepare(
-          "SELECT DISTINCT c.Choice_ID, s.Name
-          From Sports AS s INNER JOIN Choices AS c
-          ON c.Sport_ID = s.Sport_ID INNER JOIN Year AS y
-          ON y.Year_ID = c.Year_ID
-          Where y.Code Like CONCAT('%', :year, '%') AND
-          c.Current = 'Y' AND
-          c.Sex IN (:sex, 'B') AND
-          c.Term_ID = 2 ORDER BY Name ASC");
-        $stmt->bindParam(':year', $_SESSION['year']);
-        $stmt->bindParam(':sex', $_SESSION['sex']);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        {
-          echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
-        }
-      }
-      catch(PDOException $e)
-      {
-        echo "error".$e->getMessage();
-      }
-      ?>
-  	  </select>
-      <select name="term3sport">
-      <option value=" " selected disabled>Please select a third term sport...</option>
-      <?php
-      include_once('connection.php');
-      try{
-        $stmt = $conn->prepare(
-          "SELECT DISTINCT c.Choice_ID, s.Name
-          From Sports AS s INNER JOIN Choices As c
-          ON c.Sport_ID = s.Sport_ID INNER JOIN Year As y
-          ON y.Year_ID = c.Year_ID
-          Where y.Code Like CONCAT('%', :year, '%') AND
-          c.Current = 'Y' AND
-          c.Sex IN (:sex, 'B') AND
-          c.Term_ID = 3 ORDER BY Name ASC");
-        $stmt->bindParam(':year', $_SESSION['year']);
-        $stmt->bindParam(':sex', $_SESSION['sex']);
-        $stmt->execute();
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        {
-          echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
-        }
-      }
-      catch(PDOException $e)
-      {
-        echo "error".$e->getMessage();
-      }
-      ?>
-      <input type="submit" value="Submit Choices">
-  	  </select>
-    </form>
+    <div class='container col-md-8 rounded p-5 mt-5 border'>
+      <h2 class='text-center'>Oundle School Sports Database</h2>
+      <h4 class='pt-4'><?php echo 'Welcome: '.$_SESSION['name'] ?></h4>
+      <h5 class='pt-2'>Please fill all forms</h5>
+      <form action="postChoice.php" method ="post">
+        <div class='py-2 row'>
+          <div class='col-md-4'>
+            <select name="term1sport" class='custom-select'>
+            <option value=" " selected disabled>Please select a first term sport...</option>
+            <?php
+            include_once('connection.php');
+            try{
+              $stmt = $conn->prepare(
+                "SELECT DISTINCT c.Choice_ID, s.Name
+                From Sports AS s INNER JOIN Choices As c
+                ON c.Sport_ID = s.Sport_ID INNER JOIN Year As y
+                ON y.Year_ID = c.Year_ID
+                Where y.Code Like CONCAT('%', :year, '%') AND
+                c.Current = 'Y' AND
+                c.Sex IN (:sex, 'B') AND
+                c.Term_ID = 1 ORDER BY Name ASC");
+              $stmt->bindParam(':year', $_SESSION['year']);
+              $stmt->bindParam(':sex', $_SESSION['sex']);
+              $stmt->execute();
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+              {
+                echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
+              }
+            }
+            catch(PDOException $e)
+            {
+              echo "error".$e->getMessage();
+            }
+            ?>
+        	  </select>
+          </div>
+          <div class='col-md-4'>
+            <select name="term2sport" class='custom-select'>
+            <option value=" " selected disabled>Please select a second term sport...</option>
+            <?php
+            include_once('connection.php');
+            try{
+              $stmt = $conn->prepare(
+                "SELECT DISTINCT c.Choice_ID, s.Name
+                From Sports AS s INNER JOIN Choices AS c
+                ON c.Sport_ID = s.Sport_ID INNER JOIN Year AS y
+                ON y.Year_ID = c.Year_ID
+                Where y.Code Like CONCAT('%', :year, '%') AND
+                c.Current = 'Y' AND
+                c.Sex IN (:sex, 'B') AND
+                c.Term_ID = 2 ORDER BY Name ASC");
+              $stmt->bindParam(':year', $_SESSION['year']);
+              $stmt->bindParam(':sex', $_SESSION['sex']);
+              $stmt->execute();
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+              {
+                echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
+              }
+            }
+            catch(PDOException $e)
+            {
+              echo "error".$e->getMessage();
+            }
+            ?>
+        	  </select>
+          </div>
+          <div class='col-md-4'>
+            <select name="term3sport" class='custom-select'>
+            <option value=" " selected disabled>Please select a third term sport...</option>
+            <?php
+            include_once('connection.php');
+            try{
+              $stmt = $conn->prepare(
+                "SELECT DISTINCT c.Choice_ID, s.Name
+                From Sports AS s INNER JOIN Choices As c
+                ON c.Sport_ID = s.Sport_ID INNER JOIN Year As y
+                ON y.Year_ID = c.Year_ID
+                Where y.Code Like CONCAT('%', :year, '%') AND
+                c.Current = 'Y' AND
+                c.Sex IN (:sex, 'B') AND
+                c.Term_ID = 3 ORDER BY Name ASC");
+              $stmt->bindParam(':year', $_SESSION['year']);
+              $stmt->bindParam(':sex', $_SESSION['sex']);
+              $stmt->execute();
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+              {
+                echo("<option value='".$row['Choice_ID']."'>".$row['Name']."</option>");
+              }
+            }
+            catch(PDOException $e)
+            {
+              echo "error".$e->getMessage();
+            }
+            ?>
+        	  </select>
+          </div>
+        </div>
+        <div class='py-2 row'>
+          <div class='col-md-12'>
+            <input class='btn btn-success float-right'type="submit" value="Submit Choices">
+          </div>
+        </div>
+      </form>
+
+      <div>
+        <!-- Circus T1 code -->
+      </div>
+      <div>
+        <!-- Circus T2 code -->
+      </div>
+      <div>
+        <!-- Circus T3 code -->
+      </div>
+
+      <div>
+        <!-- Rules and stuff go here -->
+      </div>
 
 
-    <form action="process.php" method="post">
-      <input type="submit" value="Logout">
-    </form>
+      <form action="process.php" method="post" class='col-md-12'>
+         <div class="text-center col-md-12">
+           <input type="submit" class="btn btn-primary btn-sx" value="Logout">
+         </div>
+      </form>
+    <div>
   </body>
 </html>
