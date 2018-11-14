@@ -4,14 +4,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include_once('connection.php');
-if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
-    {
-        func();
-    }
-    function func()
-    {
-      $conn = mysqli_connect("localhost", "root", "", "SportsDB");
-    }
 session_start();
 if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
   header('Location:login.php');

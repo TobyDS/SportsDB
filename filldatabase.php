@@ -1,12 +1,5 @@
 <?php
 include_once('connection.php');
-if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
-    {
-        func();
-    }
-    function func()
-    {
-      $conn = mysqli_connect("localhost", "root", "", "SportsDB");
 
       // Reads sl.csv into Student table
       $file = fopen("csvs/sl.csv", "r");

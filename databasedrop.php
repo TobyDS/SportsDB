@@ -3,10 +3,10 @@
 	<head>
 		<body>
 			<?php
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "SportsDB";
+  $servername = "sql2.freemysqlhosting.net";
+  $username = "sql2265455";
+  $password = "xF8%pG6*";
+  $dbname = "sql2265455";
 
   // Create connection
   $conn = new mysqli($servername, $username, $password);

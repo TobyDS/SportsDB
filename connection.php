@@ -1,8 +1,8 @@
 <?php
-$servername = "fdb23.awardspace.net";
-$username = "2880778_sportsdb";
-$password = "L@nhams1";
-$dbname = "2880778_sportsdb";
+$servername = "sql2.freemysqlhosting.net";
+$username = "sql2265455";
+$password = "xF8%pG6*";
+$dbname = "sql2265455";
 try {
     $conn = new PDO("mysql:host=$servername;port=3306;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception

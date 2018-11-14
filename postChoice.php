@@ -6,14 +6,7 @@ error_reporting(E_ALL);
 array_map("htmlspecialchars", $_POST);
 
 include_once('connection.php');
-if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
-    {
-        func();
-    }
-    function func()
-    {
-      $conn = mysqli_connect("localhost", "root", "", "SportsDB");
-    }
+
 session_start();
 if( !isset($_SESSION['username']) ){
   header('Location:login.php');
