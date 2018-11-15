@@ -40,10 +40,9 @@ print_r($_SESSION);
       <form action="postChoice.php" method ="post">
         <div class='py-2 row'>
           <div class='col-md-4'>
-            <select name="term1sport" class='custom-select'>
+            <select name="term1sport" id='select1' class='custom-select'>
             <option value=" " selected disabled>Please select a first term sport...</option>
             <?php
-            include_once('connection.php');
             try{
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
@@ -70,10 +69,9 @@ print_r($_SESSION);
         	  </select>
           </div>
           <div class='col-md-4'>
-            <select name="term2sport" class='custom-select'>
+            <select name="term2sport" id='select2' class='custom-select'>
             <option value=" " selected disabled>Please select a second term sport...</option>
             <?php
-            include_once('connection.php');
             try{
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
@@ -100,10 +98,9 @@ print_r($_SESSION);
         	  </select>
           </div>
           <div class='col-md-4'>
-            <select name="term3sport" class='custom-select'>
+            <select name="term3sport" id='select3' class='custom-select'>
             <option value=" " selected disabled>Please select a third term sport...</option>
             <?php
-            include_once('connection.php');
             try{
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
@@ -137,6 +134,9 @@ print_r($_SESSION);
         </div>
       </form>
 
+      <div class="collapse" id='testid'>
+        <h6>Success</h6>
+      </div>
       <div>
         <!-- Circus T1 code -->
       </div>
@@ -157,6 +157,52 @@ print_r($_SESSION);
            <input type="submit" class="btn btn-primary btn-sx" value="Logout">
          </div>
       </form>
-    <div>
+    </div>
+    <?php
+
+    $stmt=$conn->prepare('SELECT COUNT(1) FROM Student_Choices JOIN Current_DB ON DB_Year = DB WHERE Username = :username');
+    $stmt->bindParam(':username', $_SESSION['username']);
+    $stmt->execute();
+    $row=$stmt->fetch(PDO::FETCH_ASSOC);
+    {
+    //Now to check, we use an if() statement
+    if($row['COUNT(1)'] >= 1) {
+      $stmt = $conn->prepare(
+        "SELECT st.Name AS student, st.House AS house,
+        (CASE WHEN st.Year = 6 THEN 'L6' WHEN st.Year = 7 THEN 'U6' ELSE st.Year END) as year,
+        c1.Choice_ID AS T1, c2.Choice_ID AS T2, c3.Choice_ID AS T3
+        From Students AS st
+        INNER JOIN Student_Choices AS sc
+        ON st.Username = sc.Username INNER JOIN Current_DB AS db
+        ON sc.DB_year = db.DB
+        INNER JOIN Choices AS c1
+        ON sc.T1_Choice = c1.Choice_ID
+        INNER JOIN Sports AS T1
+        ON c1.Sport_ID = T1.Sport_ID
+        INNER JOIN Choices AS c2
+        ON sc.T2_Choice = c2.Choice_ID
+        INNER JOIN Sports AS T2
+        ON c2.Sport_ID = T2.Sport_ID
+        INNER JOIN Choices AS c3
+        ON sc.T3_Choice = c3.Choice_ID
+        INNER JOIN Sports AS T3
+        ON c3.Sport_ID = T3.Sport_ID
+        Where sc.Username = :username
+        ");
+      $stmt->bindParam(':username', $_SESSION['username']);
+      $stmt->execute();
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo '<script>';
+        echo 'document.getElementById("select1").value='.$row['T1'].';';
+        echo 'document.getElementById("select1").disabled=true;';
+        echo 'document.getElementById("select2").value='.$row['T2'].';';
+        echo 'document.getElementById("select2").disabled=true;';
+        echo 'document.getElementById("select3").value='.$row['T3'].';';
+        echo 'document.getElementById("select3").disabled=true;';
+        echo '</script>';
+        }
+      }
+    }
+    ?>
   </body>
 </html>
