@@ -3,20 +3,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Creates connection to database
 include_once('connection.php');
-if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
-    {
-        func();
-    }
-    function func()
-    {
-      $conn = mysqli_connect("localhost", "root", "", "SportsDB");
-    }
+
+// Imports session variables
 session_start();
 if( !isset($_SESSION['username']) ){
   header('Location:login.php');
 }
 
+// Shows contense of session for testing (REMOVE!!!)
 print_r($_SESSION);
 ?>
 <!DOCTYPE html>
@@ -33,17 +29,23 @@ print_r($_SESSION);
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 
   <body>
+    <!-- Creates the main borderd div -->
     <div class='container col-md-8 rounded p-5 mt-5 border'>
       <h2 class='text-center'>Oundle School Sports Database</h2>
       <h4 class='pt-4'><?php echo 'Welcome: '.$_SESSION['name'] ?></h4>
       <h5 class='pt-2'>Please fill all forms</h5>
+
+      <!-- Form for students posted to postChoice.php -->
       <form action="postChoice.php" method ="post">
         <div class='py-2 row'>
           <div class='col-md-4'>
+
+            <!-- Select for first term -->
             <select name="term1sport" id='select1' class='custom-select'>
             <option value=" " selected disabled>Please select a first term sport...</option>
             <?php
             try{
+              // Populates select based on year, sex and term
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
                 From Sports AS s INNER JOIN Choices As c
@@ -69,10 +71,13 @@ print_r($_SESSION);
         	  </select>
           </div>
           <div class='col-md-4'>
+
+            <!-- Select for second term -->
             <select name="term2sport" id='select2' class='custom-select'>
             <option value=" " selected disabled>Please select a second term sport...</option>
             <?php
             try{
+              // Populates select based on year, sex and term
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
                 From Sports AS s INNER JOIN Choices AS c
@@ -98,10 +103,13 @@ print_r($_SESSION);
         	  </select>
           </div>
           <div class='col-md-4'>
+
+            <!-- Select for third term -->
             <select name="term3sport" id='select3' class='custom-select'>
             <option value=" " selected disabled>Please select a third term sport...</option>
             <?php
             try{
+              // Populates select based on year, sex and term
               $stmt = $conn->prepare(
                 "SELECT DISTINCT c.Choice_ID, s.Name
                 From Sports AS s INNER JOIN Choices As c
@@ -129,6 +137,7 @@ print_r($_SESSION);
         </div>
         <div class='py-2 row'>
           <div class='col-md-12'>
+            <!-- Button to submit options chosen -->
             <input class='btn btn-success float-right'type="submit" value="Submit Choices">
           </div>
         </div>
@@ -151,23 +160,26 @@ print_r($_SESSION);
         <!-- Rules and stuff go here -->
       </div>
 
-
+      <!-- Button to logout using process.php -->
       <form action="process.php" method="post" class='col-md-12'>
          <div class="text-center col-md-12">
            <input type="submit" class="btn btn-primary btn-sx" value="Logout">
          </div>
       </form>
     </div>
-    <?php
 
+    <!-- Disables picking if options already chosen -->
+    <?php
+    // Statment to return count of current entries from a pupil in the current db year
     $stmt=$conn->prepare('SELECT COUNT(1) FROM Student_Choices JOIN Current_DB ON DB_Year = DB WHERE Username = :username');
     $stmt->bindParam(':username', $_SESSION['username']);
     $stmt->execute();
     $row=$stmt->fetch(PDO::FETCH_ASSOC);
     {
-    //Now to check, we use an if() statement
+    // Now to check, we use an if() statement
     if($row['COUNT(1)'] >= 1) {
       $stmt = $conn->prepare(
+        // Selects the sports options chosen
         "SELECT st.Name AS student, st.House AS house,
         (CASE WHEN st.Year = 6 THEN 'L6' WHEN st.Year = 7 THEN 'U6' ELSE st.Year END) as year,
         c1.Choice_ID AS T1, c2.Choice_ID AS T2, c3.Choice_ID AS T3
@@ -192,14 +204,17 @@ print_r($_SESSION);
       $stmt->bindParam(':username', $_SESSION['username']);
       $stmt->execute();
       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo '<script>';
-        echo 'document.getElementById("select1").value='.$row['T1'].';';
-        echo 'document.getElementById("select1").disabled=true;';
-        echo 'document.getElementById("select2").value='.$row['T2'].';';
-        echo 'document.getElementById("select2").disabled=true;';
-        echo 'document.getElementById("select3").value='.$row['T3'].';';
-        echo 'document.getElementById("select3").disabled=true;';
-        echo '</script>';
+        // Echo in values chosen and lock each dropdown
+        echo('
+          <script>
+          document.getElementById("select1").value='.$row['T1'].';
+          document.getElementById("select1").disabled=true;
+          document.getElementById("select2").value='.$row['T2'].';
+          document.getElementById("select2").disabled=true;
+          document.getElementById("select3").value='.$row['T3'].';
+          document.getElementById("select3").disabled=true;
+          </script>
+        ');
         }
       }
     }

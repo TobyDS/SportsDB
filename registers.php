@@ -3,12 +3,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Creates connection to database
 include_once('connection.php');
+
+// Imports session variables
 session_start();
 if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
   header('Location:login.php');
 }
 
+// Shows contense of session for testing (REMOVE!!!)
 print_r($_SESSION);
 ?>
 
@@ -28,10 +32,13 @@ print_r($_SESSION);
 
 </head>
 <body>
+  <!-- Open a div to contian the table -->
   <div class='container-fluid' style='margin-top: 20px'>
     <div class="row">
+      <!-- Sets the width of the div contianing table -->
       <div class="col-md-8 mx-auto">
         <table class="table table-bordered table-hover" id='register'>
+          <!-- Contians the headdings of the table -->
           <thead>
             <tr>
               <td>Name</td>
@@ -45,6 +52,7 @@ print_r($_SESSION);
           <tbody>
             <?php
               ini_set("display_errors", 1);
+              // SQL Statment that looks up each records name, house, year and sports options
               try{
                 $stmt = $conn->prepare(
                   "SELECT st.Name AS student, st.House AS house,
@@ -69,6 +77,7 @@ print_r($_SESSION);
                   ");
                 $stmt->execute();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                  // echos the values found into the array for each row
                   echo '<tr>
                   <td>'.$row['student'].'</td>
                   <td>'.$row['house'].'</td>
@@ -90,6 +99,7 @@ print_r($_SESSION);
       </div>
     </div>
   </div>
+<!-- Calls a fuction which contains the tables id which makes it dynamic usingthe datatables CDN -->
 <script type="text/javascript">
 $('#register').DataTable( {
     "order": [[ 1, 'asc' ], [ 2, 'asc' ], [ 0, 'asc' ]],
@@ -109,6 +119,7 @@ $('#register').DataTable( {
       orientation: 'landscape',
       title: 'Oundle School Student Sports Options',
       download: 'open',
+      // Function to automatically size and center each collumn in export
       customize: function (doc) {
         doc.content[1].table.widths =
         Array(doc.content[1].table.body[0].length + 1).join('*').split('');
@@ -121,7 +132,7 @@ $('#register').DataTable( {
           doc.content[1].table.body[i][3].alignment = 'center';
           doc.content[1].table.body[i][4].alignment = 'center';
           doc.content[1].table.body[i][5].alignment = 'center';
-};
+        };
       },
     },
     {

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<body>
-			<?php
+<head>
+<body>
+	<?php
   $servername = "sql2.freemysqlhosting.net";
   $username = "sql2265455";
   $password = "xF8%pG6*";
@@ -136,8 +136,8 @@
 
   $conn->close();
   ?>
-			<input type="button" onclick="location.href='databasedrop.php';" value="DropDB" />
-			<input type="button" onclick="location.href='filldatabase.php';" value="FillDB" />
-		</body>
-	</head>
+	<input type="button" onclick="location.href='databasedrop.php';" value="DropDB" />
+	<input type="button" onclick="location.href='filldatabase.php';" value="FillDB" />
+</body>
+</head>
 </html>

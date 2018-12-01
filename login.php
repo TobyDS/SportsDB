@@ -37,9 +37,10 @@ print_r($_SESSION);
 <div class='container col-md-2 rounded p-3 mt-5 border text-center'>
   <h6>Buttons for testing purposes:</h6>
   <form action='Backdoor.php' method='post'>
-  <button class='btn btn-secondary' name='submit' value='0'>Student</button>
-  <button class='btn btn-secondary' name='submit' value='1'>Teacher</button>
-  <button class='btn btn-secondary' name='submit' value='2'>Admin</button>
+    <button class='btn btn-secondary' name='submit' value='0'>Student</button>
+    <button class='btn btn-secondary' name='submit' value='1'>Teacher</button>
+    <button class='btn btn-secondary' name='submit' value='2'>Admin</button>
+  </div>
 </form>
 </div>
 
