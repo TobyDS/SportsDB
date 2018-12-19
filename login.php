@@ -23,7 +23,7 @@ print_r($_SESSION);
 <div class='container col-md-3 rounded p-5 mt-5 border'>
   <form action="Authentication.php" method ="post">
     <h3 class='text-center'>Please Login</h3>
-    <h5 class='pt-3'>Enter Username and Password</h5>
+    <h5 class='pt-3' style="font-size:1.1vw;">Enter Username and Password</h5>
       <div class="form-group mb-0">
         <input class='form-control float-left mt-3 mb-1' placeholder="Username" type="text" name="username"><br>
         <input class='form-control float-left mb-3' placeholder="Password" type="password" name="password"><br>
@@ -37,9 +37,11 @@ print_r($_SESSION);
 <div class='container col-md-2 rounded p-3 mt-5 border text-center'>
   <h6>Buttons for testing purposes:</h6>
   <form action='Backdoor.php' method='post'>
-    <button class='btn btn-secondary' name='submit' value='0'>Student</button>
-    <button class='btn btn-secondary' name='submit' value='1'>Teacher</button>
-    <button class='btn btn-secondary' name='submit' value='2'>Admin</button>
+    <div class='btn-group special button-group-justified' role=group>
+      <button class='btn btn-secondary' name='submit' value='0'>Student</button>
+      <button class='btn btn-secondary' name='submit' value='1'>Teacher</button>
+      <button class='btn btn-secondary' name='submit' value='2'>Admin</button>
+    </div>
   </div>
 </form>
 </div>

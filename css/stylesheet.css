@@ -37,3 +37,6 @@ table.dataTable thead .sorting_asc_disabled:after{
 table.dataTable thead .sorting_desc_disabled:after {
   opacity: 0;
 }
+.btn-group.special {
+  display: flex;
+}
