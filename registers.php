@@ -44,9 +44,22 @@ print_r($_SESSION);
               <td>Name</td>
               <td>House</td>
               <td>Year</td>
-              <td>Term 1 Sport</td>
+              <?php
+                try{
+                  $stmt = $conn->prepare("SELECT * FROM Term");
+                  $stmt->execute();
+                  while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
+                    echo '<td>'.$row['Name'].' Sport</td>';
+                  }
+                }
+                catch(PDOException $e)
+                {
+                  echo "error".$e->getMessage();
+                }
+              ?>
+              <!-- <td>Term 1 Sport</td>
               <td>Term 2 Sport</td>
-              <td>Term 3 Sport</td>
+              <td>Term 3 Sport</td> -->
             </tr>
           </thead>
           <tbody>
@@ -108,8 +121,8 @@ $('#register').DataTable( {
     ],
     'dom': 'Bfrtipl',
     'buttons': [
-    {
-      extend: 'copy'
+      {
+        "text" : 'Email'
     },
     {
       extend: 'excel'
@@ -135,13 +148,6 @@ $('#register').DataTable( {
         };
       },
     },
-    {
-      extend: 'print',
-      title: 'Oundle School Sports Database',
-      messageTop: 'This is a list of all pupils sports options',
-      footer: false,
-      header: false
-    }
     ]
     } );
 </script>

@@ -37,6 +37,37 @@ table.dataTable thead .sorting_asc_disabled:after{
 table.dataTable thead .sorting_desc_disabled:after {
   opacity: 0;
 }
+
 .btn-group.special {
   display: flex;
+}
+
+.special .btn {
+  flex: 1
+}
+
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 200;
+  src: url("//applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-thin-webfont.woff2");
+}
+
+body, html {
+    height:100%;
+    width:100%;
+    font-family: "San Francisco";
+    font-weight: 200
+}
+.flexFont {
+    height:8em;
+    width:75%;
+    background-color:#eeeeee;
+    padding:1%;
+    margin: 10px;
+}
+
+.smaller {
+    font-size: 0.7em;
+    background-color:red;
+    width: 10em;
 }
