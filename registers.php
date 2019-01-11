@@ -32,11 +32,109 @@ print_r($_SESSION);
 
 </head>
 <body>
-  <!-- Open a div to contian the table -->
-  <div class='container-fluid' style='margin-top: 20px'>
+  <!-- Open a div to contian the table and Filters -->
+  <div class='container-fluid rounded border col-md-11 py-5' style='margin-top: 20px'>
+    <div class='container-fluid col-md-8 text-center border mb-3 pt-3'>
+      <h5 class='text-left'>Please select filters if you wish to filter your results:</h5>
+      <div class='row'>
+        <div class='col-md-2 text-left mr-3'>
+          <h6>Sport:</h6>
+        </div>
+        <div class='col-md-2 text-left mr-3'>
+          <h6>Term:</h6>
+        </div>
+        <div class='col-md-2 text-left mr-3'>
+          <h6>Sex:</h6>
+        </div>
+        <div class='col-md-2 text-left mr-3'>
+          <h6>Year:</h6>
+        </div>
+        <div class='col-md-2 text-left mr-3'>
+          <h6>House:</h6>
+        </div>
+      </div>
+
+      <form class='form-group container row'>
+        <select class='form-control-sm col-md-2 mr-4' id="Sport">
+          <option value="">Not Set</option>
+          <?php
+            try{
+              $stmt = $conn->prepare("SELECT * FROM Sports");
+              $stmt->execute();
+              while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
+                echo '<option value="'.$row['Sport_ID'].'">'.$row['Name'].'</option>';
+              }
+            }
+            catch(PDOException $e)
+            {
+              echo "error".$e->getMessage();
+            }
+          ?>
+        </select>
+
+        <select class='form-control-sm col-md-2 mr-4' id="Term">
+          <option value="">Not Set</option>
+          <?php
+            try{
+              $stmt = $conn->prepare("SELECT * FROM Term");
+              $stmt->execute();
+              while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
+                echo '<option value="'.$row['Term_ID'].'">'.$row['Name'].'</option>';
+              }
+            }
+            catch(PDOException $e)
+            {
+              echo "error".$e->getMessage();
+            }
+          ?>
+        </select>
+
+        <select class='form-control-sm col-md-2 mr-4' id="Sex">
+          <option value="">Not Set</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+
+        <select class='form-control-sm col-md-2 mr-4' id="Year">
+          <option value="" >Not Set</option>
+          <option value="1" >1st Form</option>
+          <option value="2" >2nd Form</option>
+          <option value="3" >3rd Form</option>
+          <option value="4" >4th Form</option>
+          <option value="5" >5th Form</option>
+          <option value="6" >L6th Form</option>
+          <option value="7" >U6th Form</option>
+          <option value="9" >6th Form</option>
+          <option value="8" >1st and 2nd Form</option>
+          <option value="13" >3rd - U6th</option>
+          <option value="11" >4th - U6th</option>
+          <option value="12" >5th - U6th</option>
+        </select>
+
+        <select class='form-control-sm col-md-2 mr-4' id="House">
+          <option value="">Not Set</option>
+          <option value="B" >Bramston</option>
+          <option value="C" >Crosby</option>
+          <option value="D" >Dryden</option>
+          <option value="F" >Fisher</option>
+          <option value="G" >Grafton</option>
+          <option value="K" >Kirkeby</option>
+          <option value="Ldr" >Laundimer</option>
+          <option value="L" >Laxon</option>
+          <option value="N" >New House</option>
+          <option value="Sn" >Sanderson</option>
+          <option value="Sc" >School House</option>
+          <option value="" >Scott House</option>
+          <option value="S" >Sidney</option>
+          <option value="StA" >St Anthony</option>
+          <option value="" >Berrystead</option>
+          <option value="W" >Wyatt</option>
+        </select>
+      </form>
+    </div>
     <div class="row">
       <!-- Sets the width of the div contianing table -->
-      <div class="col-md-8 mx-auto">
+      <div class="col-md-8 mx-auto border rounded py-3 mb-3">
         <table class="table table-bordered table-hover" id='register'>
           <!-- Contians the headdings of the table -->
           <thead>
@@ -57,9 +155,6 @@ print_r($_SESSION);
                   echo "error".$e->getMessage();
                 }
               ?>
-              <!-- <td>Term 1 Sport</td>
-              <td>Term 2 Sport</td>
-              <td>Term 3 Sport</td> -->
             </tr>
           </thead>
           <tbody>
@@ -111,6 +206,11 @@ print_r($_SESSION);
         </table>
       </div>
     </div>
+    <form action="process.php" method="post">
+       <div class="text-center">
+         <input type="submit" class="btn btn-primary btn-sx" value="Logout">
+       </div>
+    </form>
   </div>
 <!-- Calls a fuction which contains the tables id which makes it dynamic usingthe datatables CDN -->
 <script type="text/javascript">
@@ -151,12 +251,6 @@ $('#register').DataTable( {
     ]
     } );
 </script>
-
-  <form action="process.php" method="post">
-     <div class="text-center">
-       <input type="submit" class="btn btn-primary btn-sx" value="Logout">
-     </div>
-  </form>
 
 </div>
 </body>

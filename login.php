@@ -23,29 +23,29 @@ print_r($_SESSION);
 
 <div class='container-fluid col-md-3 rounded p-5 mt-5 border'>
   <form action="Authentication.php" method ="post">
-    <h3 class='text-center'  style="font-size:2vw;">Please Login</h3>
+    <h3 class='text-center' style="font-size:2vw;">Please Login</h3>
     <h5 class='pt-3 flexFont'>Enter Username and Password</h5>
-      <div class="form-group mb-0">
-        <input class='form-control float-left mt-3 mb-1 flexFont' placeholder="Username" type="text" name="username"><br>
-        <input class='form-control float-left mb-3 flexFont' placeholder="Password" type="password" name="password"><br>
+    <div class="form-group mb-0">
+      <input class='form-control float-left mt-3 mb-1 flexFont' placeholder="Username" type="text" name="username"><br>
+      <input class='form-control float-left mb-3 flexFont' placeholder="Password" type="password" name="password"><br>
     </div>
     <div class="text-center">
-    <input type="submit" class='btn btn-primary btn-sx'  style="font-size:1vw;" value="Login">
-  </div>
+      <input type="submit" class='btn btn-primary btn-sx'  style="font-size:1vw;" value="Login">
+    </div>
   </form>
 </div>
 
 <div class='container col-md-2 rounded p-3 mt-5 border text-center'>
   <h6 class='flexFont'>Buttons for testing purposes:</h6>
-  <div>
-    <form action='Backdoor.php' method='post'>
-      <div class='btn-group f' role='group'>
-        <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='0'>Student</button>
-        <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='1'>Teacher</button>
-        <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='2'>Admin</button>
-      </div>
-    </form>
-  </div>
+   <div>
+     <form action='Backdoor.php' method='post'>
+       <div class='btn-group' role='group'>
+         <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='0'>Student</button>
+         <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='1'>Teacher</button>
+         <button class='btn btn-secondary' style="font-size:0.75vw;" name='submit' value='2'>Admin</button>
+       </div>
+     </form>
+   </div>
 </div>
 
 </body>
