@@ -29,7 +29,6 @@ print_r($_SESSION);
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
-
 </head>
 <body>
   <!-- Open a div to contian the table and Filters -->
@@ -55,11 +54,11 @@ print_r($_SESSION);
       </div>
 
       <form class='form-group container row'>
-        <select class='form-control-sm col-md-2 mr-4' id="Sport">
+        <select class='form-control-sm col-md-2 mr-4' id="filter_sport">
           <option value="">Not Set</option>
           <?php
             try{
-              $stmt = $conn->prepare("SELECT * FROM Sports");
+              $stmt = $conn->prepare("SELECT * FROM Sports ORDER BY Name ASC");
               $stmt->execute();
               while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
                 echo '<option value="'.$row['Sport_ID'].'">'.$row['Name'].'</option>';
@@ -72,7 +71,7 @@ print_r($_SESSION);
           ?>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Term">
+        <select class='form-control-sm col-md-2 mr-4' id="filter_term">
           <option value="">Not Set</option>
           <?php
             try{
@@ -89,13 +88,13 @@ print_r($_SESSION);
           ?>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Sex">
+        <select class='form-control-sm col-md-2 mr-4' id="filter_sex">
           <option value="">Not Set</option>
           <option value="M">Male</option>
           <option value="F">Female</option>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Year">
+        <select class='form-control-sm col-md-2 mr-4' id="filter_year">
           <option value="" >Not Set</option>
           <option value="1" >1st Form</option>
           <option value="2" >2nd Form</option>
@@ -111,9 +110,10 @@ print_r($_SESSION);
           <option value="12" >5th - U6th</option>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="House">
+        <select class='form-control-sm col-md-2 mr-4' id="filter_house">
           <option value="">Not Set</option>
           <option value="B" >Bramston</option>
+          <option value="" >Berrystead</option>
           <option value="C" >Crosby</option>
           <option value="D" >Dryden</option>
           <option value="F" >Fisher</option>
@@ -124,10 +124,9 @@ print_r($_SESSION);
           <option value="N" >New House</option>
           <option value="Sn" >Sanderson</option>
           <option value="Sc" >School House</option>
-          <option value="" >Scott House</option>
           <option value="S" >Sidney</option>
+          <option value="" >Scott House</option>
           <option value="StA" >St Anthony</option>
-          <option value="" >Berrystead</option>
           <option value="W" >Wyatt</option>
         </select>
       </form>
@@ -136,7 +135,7 @@ print_r($_SESSION);
     <div class="row">
       <!-- Sets the width of the div contianing table -->
       <div class="col-md-8 mx-auto border rounded py-3 mb-3">
-        <table class="table table-bordered table-hover" id='register'>
+        <table class="table table-bordered table-hover" id='register_data'>
           <!-- Contians the headdings of the table -->
           <thead>
             <tr>
@@ -214,45 +213,23 @@ print_r($_SESSION);
     </form>
   </div>
 <!-- Calls a fuction which contains the tables id which makes it dynamic usingthe datatables CDN -->
-<script type="text/javascript">
-$('#register').DataTable( {
-    "order": [[ 1, 'asc' ], [ 2, 'asc' ], [ 0, 'asc' ]],
-    "columnDefs": [
-      { "orderable": false, "targets": '_all'}
-    ],
-    'dom': 'Bfrtipl',
-    'buttons': [
-      {
-        "text" : 'Email'
-    },
-    {
-      extend: 'excel'
-    },
-    {
-      extend: 'pdf',
-      orientation: 'landscape',
-      title: 'Oundle School Student Sports Options',
-      download: 'open',
-      // Function to automatically size and center each collumn in export
-      customize: function (doc) {
-        doc.content[1].table.widths =
-        Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-
-        var rowCount = doc.content[1].table.body.length;
-        for (i = 1; i < rowCount; i++) {
-          doc.content[1].table.body[i][0].alignment = 'center';
-          doc.content[1].table.body[i][1].alignment = 'center';
-          doc.content[1].table.body[i][2].alignment = 'center';
-          doc.content[1].table.body[i][3].alignment = 'center';
-          doc.content[1].table.body[i][4].alignment = 'center';
-          doc.content[1].table.body[i][5].alignment = 'center';
+<script>
+document.querySelector('#filter_sport').addEventListener('change', function() {
+    var selectedValue = this.options[this.selectedIndex].value;
+    if (selectedValue) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '/path/to/your/php-script.php?value=' + selectedValue, true);
+        request.onload = function() {
+            if (request.status >= 200 && request.status < 400) {
+                var dropdownResult = document.querySelector('#dropdown-result');
+                dropdownResult.innerHTML = request.responseText;
+                dropdownResult.style.display = '';
+            }
         };
-      },
-    },
-    ]
-    } );
+        request.send();
+    }
+});
 </script>
-
 </div>
 </body>
 </html>
