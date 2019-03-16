@@ -13,7 +13,7 @@ if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
 }
 
 // Shows contense of session for testing (REMOVE!!!)
-print_r($_SESSION);
+//print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +55,12 @@ print_r($_SESSION);
       </div>
 
       <form class='form-group container row'>
-        <select class='form-control-sm col-md-2 mr-4' id="Sport">
-          <option value="">Not Set</option>
+        <select class='form-control-sm col-md-2 mr-4' id="filter_sport">
+          <option value="NULL">Not Set</option>
           <?php
+          include_once('connection.php');
             try{
-              $stmt = $conn->prepare("SELECT * FROM Sports");
+              $stmt = $conn->prepare("SELECT * FROM Sports ORDER BY Name ASC");
               $stmt->execute();
               while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
                 echo '<option value="'.$row['Sport_ID'].'">'.$row['Name'].'</option>';
@@ -72,8 +73,8 @@ print_r($_SESSION);
           ?>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Term">
-          <option value="">Not Set</option>
+        <select class='form-control-sm col-md-2 mr-4' id="filter_term">
+          <option value="NULL">Not Set</option>
           <?php
             try{
               $stmt = $conn->prepare("SELECT * FROM Term");
@@ -89,14 +90,14 @@ print_r($_SESSION);
           ?>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Sex">
-          <option value="">Not Set</option>
+        <select class='form-control-sm col-md-2 mr-4' id="filter_sex">
+          <option value="NULL">Not Set</option>
           <option value="M">Male</option>
           <option value="F">Female</option>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="Year">
-          <option value="" >Not Set</option>
+        <select class='form-control-sm col-md-2 mr-4' id="filter_year">
+          <option value="NULL" >Not Set</option>
           <option value="1" >1st Form</option>
           <option value="2" >2nd Form</option>
           <option value="3" >3rd Form</option>
@@ -111,8 +112,8 @@ print_r($_SESSION);
           <option value="12" >5th - U6th</option>
         </select>
 
-        <select class='form-control-sm col-md-2 mr-4' id="House">
-          <option value="">Not Set</option>
+        <select class='form-control-sm col-md-2 mr-4' id="filter_house">
+          <option value="NULL">Not Set</option>
           <option value="B" >Bramston</option>
           <option value="C" >Crosby</option>
           <option value="D" >Dryden</option>
@@ -124,87 +125,40 @@ print_r($_SESSION);
           <option value="N" >New House</option>
           <option value="Sn" >Sanderson</option>
           <option value="Sc" >School House</option>
-          <option value="" >Scott House</option>
+          <option value="Sco" >Scott House</option>
           <option value="S" >Sidney</option>
           <option value="StA" >St Anthony</option>
-          <option value="" >Berrystead</option>
+          <option value="By" >Berrystead</option>
           <option value="W" >Wyatt</option>
         </select>
       </form>
     </div>
 
     <div class="row">
-      <!-- Sets the width of the div contianing table -->
-      <div class="col-md-8 mx-auto border rounded py-3 mb-3">
-        <table class="table table-bordered table-hover" id='register'>
-          <!-- Contians the headdings of the table -->
-          <thead>
-            <tr>
-              <td width="20%">Name</td>
-              <td width="10%">House</td>
-              <td width="10%">Year</td>
-              <?php
-                try{
-                  $stmt = $conn->prepare("SELECT * FROM Term");
-                  $stmt->execute();
-                  while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
-                    echo '<td width="20%">'.$row['Name'].' Sport</td>';
+        <div class="col-md-8 mx-auto border rounded py-3 mb-3">
+          <table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
+              <thead>
+              <tr>
+                <th width="20%">Name</th>
+                <th width="10%">House</th>
+                <th width="10%">Year</th>
+                <?php
+                  try{
+                    $stmt = $conn->prepare("SELECT * FROM Term");
+                    $stmt->execute();
+                    while ($row =$stmt->fetch(PDO::FETCH_ASSOC)){
+                      echo '<th width="20%">'.$row['Name'].' Sport</th>';
+                    }
                   }
-                }
-                catch(PDOException $e)
-                {
-                  echo "error".$e->getMessage();
-                }
-              ?>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              ini_set("display_errors", 1);
-              // SQL Statment that looks up each records name, house, year and sports options
-              try{
-                $stmt = $conn->prepare(
-                  "SELECT st.Name AS student, st.House AS house,
-                  (CASE WHEN st.Year = 6 THEN 'L6' WHEN st.Year = 7 THEN 'U6' ELSE st.Year END) as year,
-                  T1.Name AS T1, T2.Name AS T2, T3.Name AS T3
-                  From Students AS st
-                  INNER JOIN Student_Choices AS sc
-                  ON st.Username = sc.Username INNER JOIN Current_DB AS db
-                  ON sc.DB_year = db.DB
-                  INNER JOIN Choices AS c1
-                  ON sc.T1_Choice = c1.Choice_ID
-                  INNER JOIN Sports AS T1
-                  ON c1.Sport_ID = T1.Sport_ID
-                  INNER JOIN Choices AS c2
-                  ON sc.T2_Choice = c2.Choice_ID
-                  INNER JOIN Sports AS T2
-                  ON c2.Sport_ID = T2.Sport_ID
-                  INNER JOIN Choices AS c3
-                  ON sc.T3_Choice = c3.Choice_ID
-                  INNER JOIN Sports AS T3
-                  ON c3.Sport_ID = T3.Sport_ID
-                  ");
-                $stmt->execute();
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                  // echos the values found into the array for each row
-                  echo '<tr>
-                  <td>'.$row['student'].'</td>
-                  <td>'.$row['house'].'</td>
-                  <td>'.$row['year'].'</td>
-                  <td>'.$row['T1'].'</td>
-                  <td>'.$row['T2'].'</td>
-                  <td>'.$row['T3'].'</td>
-                  </tr>
-                  ';
-                }
-              }
-              catch(PDOException $e)
-              {
-                echo "error".$e->getMessage();
-              }
-            ?>
-          </tbody>
-        </table>
+                  catch(PDOException $e)
+                  {
+                    echo "error".$e->getMessage();
+                  }
+                ?>
+              </tr>
+              </thead>
+          </table>
+        </div>
       </div>
     </div>
     <form action="process.php" method="post">
@@ -214,43 +168,87 @@ print_r($_SESSION);
     </form>
   </div>
 <!-- Calls a fuction which contains the tables id which makes it dynamic usingthe datatables CDN -->
-<script type="text/javascript">
-$('#register').DataTable( {
-    "order": [[ 1, 'asc' ], [ 2, 'asc' ], [ 0, 'asc' ]],
-    "columnDefs": [
-      { "orderable": false, "targets": '_all'}
-    ],
-    'dom': 'Bfrtipl',
-    'buttons': [
-      {
-        "text" : 'Email'
-    },
-    {
-      extend: 'excel'
-    },
-    {
-      extend: 'pdf',
-      orientation: 'landscape',
-      title: 'Oundle School Student Sports Options',
-      download: 'open',
-      // Function to automatically size and center each collumn in export
-      customize: function (doc) {
-        doc.content[1].table.widths =
-        Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+<script>
+    $(document).ready(function(){
+        var dataTable=$('#example').DataTable({
+          "processing": true,
+          "serverSide":true,
+          lengthMenu: [[10, 25, 100, 5000], [10, 25, 100, "All"]],
+          pageLength: 10,
+          "ajax":{
+            url:"fetch.php",
+            type:"post",
+            "data": function ( d ) {
+            d.filter_sport = $('#filter_sport').val();
+            d.filter_term = $('#filter_term').val();
+            d.filter_sex = $('#filter_sex').val();
+            d.filter_year = $('#filter_year').val();
+            d.filter_house = $('#filter_house').val();
+          },
+          dataType: 'json',
+          },
+          'dom': 'Bfrtipl',
+          'buttons': [
+            {
+              "text" : 'Email'
+          },
+          {
+          extend: 'excel',
+          },
+          {
+            extend: 'pdf',
+            orientation: 'landscape',
+            title: 'Oundle School Student Sports Options',
+            download: 'open',
+            // Function to automatically size and center each collumn in export
+            customize: function (doc) {
+              doc.content[1].table.widths =
+              Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 
-        var rowCount = doc.content[1].table.body.length;
-        for (i = 1; i < rowCount; i++) {
-          doc.content[1].table.body[i][0].alignment = 'center';
-          doc.content[1].table.body[i][1].alignment = 'center';
-          doc.content[1].table.body[i][2].alignment = 'center';
-          doc.content[1].table.body[i][3].alignment = 'center';
-          doc.content[1].table.body[i][4].alignment = 'center';
-          doc.content[1].table.body[i][5].alignment = 'center';
-        };
-      },
-    },
-    ]
-    } );
+              var rowCount = doc.content[1].table.body.length;
+              for (i = 1; i < rowCount; i++) {
+                doc.content[1].table.body[i][0].alignment = 'center';
+                doc.content[1].table.body[i][1].alignment = 'center';
+                doc.content[1].table.body[i][2].alignment = 'center';
+                doc.content[1].table.body[i][3].alignment = 'center';
+                doc.content[1].table.body[i][4].alignment = 'center';
+                doc.content[1].table.body[i][5].alignment = 'center';
+              };
+            },
+          },
+          ]
+        });
+    });
+    $(document).ready(function()
+    {
+      $("#filter_sport").on('change',function(){
+        $('#example').DataTable().ajax.reload()
+      });
+    });
+    $(document).ready(function()
+    {
+      $("#filter_term").on('change',function(){
+        $('#example').DataTable().ajax.reload()
+      });
+    });
+    $(document).ready(function()
+    {
+      $("#filter_sex").on('change',function(){
+        $('#example').DataTable().ajax.reload()
+      });
+    });
+    $(document).ready(function()
+    {
+      $("#filter_year").on('change',function(){
+        $('#example').DataTable().ajax.reload()
+      });
+    });
+    $(document).ready(function()
+    {
+      $("#filter_house").on('change',function(){
+        $('#example').DataTable().ajax.reload()
+      });
+    });
 </script>
 
 </div>
