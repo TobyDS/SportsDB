@@ -34,7 +34,7 @@ if($row['Name']=='') {
 	$_SESSION['name'] = $row['Name'];
 	$_SESSION['sex'] = $row['Sex'];
 	$_SESSION['year'] = $row['Year'];
-	// Once set send user to student choices (Using firefly set buy role!!!)
+	// Once set send user to student choices (Using firefly, set role!!!)
 	header('Location:studentChoice.php');
 }
 ?>

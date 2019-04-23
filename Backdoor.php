@@ -15,7 +15,10 @@ try{
 		$_SESSION['role'] = '1';
 		header('Location:registers.php');
 	}
-	else if($_POST['submit']==2) {header('Location:studentChoice.php');}
+	else if($_POST['submit']==2) {
+		$_SESSION['role'] = '2';
+		header('Location:admin.php');
+	}
 
   }
   catch(PDOException $e)

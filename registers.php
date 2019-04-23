@@ -33,7 +33,7 @@ if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
 </head>
 <body>
   <!-- Open a div to contian the table and Filters -->
-  <div class='container-fluid rounded border col-md-11 py-5' style='margin-top: 20px'>
+  <div class='container-fluid rounded border col-md-11 py-5' style='margin-top: 20px; margin-bottom: 20px'>
     <div class='container-fluid col-md-8 text-center border rounded mb-3 pt-3'>
       <h5 class='text-left'>Please select filters if you wish to filter your results:</h5>
       <div class='row'>
@@ -160,12 +160,12 @@ if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
           </table>
         </div>
       </div>
+      <form action="process.php" method="post">
+         <div class="text-center">
+           <input type="submit" class="btn btn-primary btn-sx" value="Logout">
+         </div>
+      </form>
     </div>
-    <form action="process.php" method="post">
-       <div class="text-center">
-         <input type="submit" class="btn btn-primary btn-sx" value="Logout">
-       </div>
-    </form>
   </div>
 <!-- Calls a fuction which contains the tables id which makes it dynamic usingthe datatables CDN -->
 <script>
@@ -173,7 +173,7 @@ if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
         var dataTable=$('#example').DataTable({
           "processing": true,
           "serverSide":true,
-          lengthMenu: [[10, 25, 100, 5000], [10, 25, 100, "All"]],
+          lengthMenu: [[10, 25, 100, 5000000], [10, 25, 100, "All"]],
           pageLength: 10,
           "ajax":{
             url:"fetch.php",
@@ -194,25 +194,72 @@ if( ($_SESSION['role']) == 0 ){ /* Change into role = teacher or admin*/
           },
           {
           extend: 'excel',
+          customize: function( xlsx ) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                $('row c[r^="C"]', sheet).attr( 's', '50' );
+            },
           },
           {
             extend: 'pdf',
-            orientation: 'landscape',
+            exportOptions: {
+                modifier: {
+                  page: 'all',
+                  search: 'none'
+                }
+              },
+            orientation: 'portrait',
+            pageSize: 'A3',
             title: 'Oundle School Student Sports Options',
             download: 'open',
             // Function to automatically size and center each collumn in export
             customize: function (doc) {
+              //Gets date
+              var now = new Date();
+						  var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+
+              // Create a footer object with 2 columns
+  						// Left side: report creation date
+  						// Right side: current page and total pages
+  						doc['footer']=(function(page, pages) {
+  							return {
+  								columns: [
+  									{
+  										alignment: 'left',
+  										text: ['Created on: ', { text: jsDate.toString() }]
+  									},
+  									{
+  										alignment: 'right',
+  										text: ['Page ', { text: page.toString() },	' of ',	{ text: pages.toString() }]
+  									}
+  								],
+  								margin: 20
+  							}
+  						});
+
+              // Change dataTable layout (Table styling)
+  						// To use predefined layouts uncomment the line below and comment the custom lines below
+  						// doc.content[0].layout = 'lightHorizontalLines'; // noBorders , headerLineOnly
+  						var objLayout = {};
+  						objLayout['hLineWidth'] = function(i) { return .5; };
+  						objLayout['vLineWidth'] = function(i) { return .5; };
+  						objLayout['hLineColor'] = function(i) { return '#aaa'; };
+  						objLayout['vLineColor'] = function(i) { return '#aaa'; };
+  						objLayout['paddingLeft'] = function(i) { return 4; };
+  						objLayout['paddingRight'] = function(i) { return 4; };
+  						doc.content[1].layout = objLayout;
+
               doc.content[1].table.widths =
               Array(doc.content[1].table.body[0].length + 1).join('*').split('');
 
               var rowCount = doc.content[1].table.body.length;
               for (i = 1; i < rowCount; i++) {
-                doc.content[1].table.body[i][0].alignment = 'center';
+                doc.content[1].table.body[i][0].alignment = 'left';
                 doc.content[1].table.body[i][1].alignment = 'center';
                 doc.content[1].table.body[i][2].alignment = 'center';
-                doc.content[1].table.body[i][3].alignment = 'center';
-                doc.content[1].table.body[i][4].alignment = 'center';
-                doc.content[1].table.body[i][5].alignment = 'center';
+                doc.content[1].table.body[i][3].alignment = 'left';
+                doc.content[1].table.body[i][4].alignment = 'left';
+                doc.content[1].table.body[i][5].alignment = 'left';
               };
             },
           },

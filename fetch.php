@@ -108,7 +108,7 @@ INNER JOIN Sports AS T3
 ON c3.Sport_ID = T3.Sport_ID
 WHERE 1=1";
 
-// Apply calculated filters to sql stament
+// Apply calculated filters to sql statement
 $sql.= "$filter_sport";
 $sql.= "$filter_sex";
 $sql.= "$filter_house";
@@ -156,7 +156,7 @@ $query=mysqli_query($con,$sql);
 $totalFilter=mysqli_num_rows($query);
 
 //Order
-$sql.=" ORDER BY st.House, st.year DESC, st.Name  LIMIT ".
+$sql.=" ORDER BY st.House, st.year, st.Name  LIMIT ".
     $request['start']."  ,".$request['length']."  ";
 $query=mysqli_query($con,$sql);
 $data=array();

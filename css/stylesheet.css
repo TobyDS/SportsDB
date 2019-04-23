@@ -8,32 +8,36 @@ background-color: #fff;
 
 table.dataTable thead .sorting:before{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_asc:before{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_desc:before{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_asc_disabled:before{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_desc_disabled:before {
   opacity: 0;
-}
+};
 
 table.dataTable thead .sorting:after{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_asc:after{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_desc:after{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_asc_disabled:after{
   opacity: 0;
-}
+};
 table.dataTable thead .sorting_desc_disabled:after {
   opacity: 0;
+};
+.navbar-dark {
+    background-color: #606060;
+    border-color: #E7E7E7;
 }

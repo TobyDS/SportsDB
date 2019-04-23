@@ -17,7 +17,7 @@
       <option value='7'>Upper Sixth</option>
     </select>
     <select name="Sex">
-      <option value=" " selected disabled>Please select a Year...</option>
+      <option value=" " selected disabled>Please select a Sex...</option>
       <option value='M'>Male</option>
       <option value='F'>Female</option>
     </select>
