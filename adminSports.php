@@ -62,10 +62,70 @@ print_r($_SESSION);
   </nav>
 
   <div class="col-md-12 pt-5">
-    <h1 style="font: Helvetica; font-weight: normal; font-size: 230%">Sports Editor</h1>
+    <h1 style="font: Helvetica; font-weight: normal; font-size: 230%">Sports Manager</h1>
     <hr>
+    <div class="text-center">
+      <h1><u>Sports Table</u></h1>
+    </div>
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <table class="table table-bordered table-hover" id='Sports'>
+          <thead>
+            <tr>
+              <td>Sport</td>
+              <td>Head of Sport</td>
+              <td>Number Taking Sport</td>
+              <td>Cap</td>
+              <td>Current</td>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              ini_set("display_errors", 1);
+              try{
+                $stmt = $conn->prepare(
+                  "SELECT Name, HS_Name,
+                  CASE WHEN Cap IS NULL THEN 'None' END AS Cap,
+                  CASE WHEN Current = 'Y' THEN 'Yes' ELSE 'No' END AS Current
+                  FROM Sports;
+                  ");
+                $stmt->execute();
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                  echo '<tr>
+                  <td>'.$row['Name'].'</td>
+                  <td>'.$row['HS_Name'].'</td>
+                  <td>Blank</td>
+                  <td>'.$row['Cap'].'</td>
+                  <td>'.$row['Current'].'</td>
+                  </tr>
+                  ';
+                }
+              }
+              catch(PDOException $e)
+              {
+                echo "error".$e->getMessage();
+              }
+            ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript">
+    $('#Sports').DataTable( {
+        'dom': 'frtip',
+        } );
+    </script>
+  </div>
+  <div class="container">
+    <div class="col-md-8 text-center mx-auto py-3">
+      <form action='adminSportsRedirect.php' method='post'>
+        <div class='btn-group' role='group'>
+          <button class='btn btn-secondary' name='submit' value='0'>Manage Sports</button>
+          <button class='btn btn-secondary' name='submit' value='1'>Add New Sports</button>
 
-
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 
